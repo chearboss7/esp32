@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MQTT Web Client</title>
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #log { border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: auto; }
+    input, button { padding: 8px; margin: 5px 0; }
+    .msg { margin: 2px 0; }
+  </style>
+</head>
+<body>
+  <h2>MQTT Web Client (test.mosquitto.org)</h2>
+
+  <label>Subscribe Topic:</label><br>
+  <input type="text" id="subTopic" value="psycoder/sub" size="40">
+  <button onclick="subscribeTopic()">Subscribe</button>
+  <br><br>
+
+  <label>Publish Topic:</label><br>
+  <input type="text" id="pubTopic" value="psycoder/pub" size="40"><br>
+  <label>Message:</label><br>
+  <input type="text" id="pubMessage" value="Hello from Browser!" size="40">
+  <button onclick="publishMessage()">Publish</button>
+
+  <h3>Messages:</h3>
+  <div id="log"></div>
+
+  <script>
+    // Connect over secure WebSocket
+    const client = mqtt.connect("wss://test.mosquitto.org:8081");
+
+    const logDiv = document.getElementById("log");
+
+    function log(msg) {
+      const p = document.createElement("div");
+      p.className = "msg";
+      p.textContent = msg;
+      logDiv.appendChild(p);
+      logDiv.scrollTop = logDiv.scrollHeight;
+    }
+
+    client.on("connect", () => {
+      log("✅ Connected to broker test.mosquitto.org");
+    });
+
+    client.on("message", (topic, message) => {
+      log(`📩 [${topic}] ${message.toString()}`);
+    });
+
+    function subscribeTopic() {
+      const topic = document.getElementById("subTopic").value;
+      client.subscribe(topic, (err) => {
+        if (!err) {
+          log(`🔔 Subscribed to ${topic}`);
+        } else {
+          log(`❌ Subscribe error: ${err}`);
+        }
+      });
+    }
+
+    function publishMessage() {
+      const topic = document.getElementById("pubTopic").value;
+      const message = document.getElementById("pubMessage").value;
+      client.publish(topic, message);
+      log(`📤 Sent to [${topic}]: ${message}`);
+    }
+  </script>
+</body>
+</html>
+
