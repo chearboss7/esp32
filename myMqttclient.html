@@ -5,68 +5,121 @@
   <title>MQTT Web Client</title>
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    #log { border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: auto; }
-    input, button { padding: 8px; margin: 5px 0; }
-    .msg { margin: 2px 0; }
+    body { font-family: Arial, sans-serif; margin: 20px; }    
+    button { padding: 8px; margin: 5px 0; margin-right: 30px; }
   </style>
 </head>
 <body>
-  <h2>MQTT Web Client (test.mosquitto.org)</h2>
-
-  <label>Subscribe Topic:</label><br>
-  <input type="text" id="subTopic" value="psycoder/sub" size="40">
-  <button onclick="subscribeTopic()">Subscribe</button>
+  <h2>ESP32 Relays Control</h2>
+  
+  <button id = "relay1bon">Relay 1 ON</button>
+  <button id = "relay1boff">Relay 1 OFF</button>
   <br><br>
-
-  <label>Publish Topic:</label><br>
-  <input type="text" id="pubTopic" value="psycoder/pub" size="40"><br>
-  <label>Message:</label><br>
-  <input type="text" id="pubMessage" value="Hello from Browser!" size="40">
-  <button onclick="publishMessage()">Publish</button>
-
-  <h3>Messages:</h3>
-  <div id="log"></div>
-
+  <button id = "relay2bon">Relay 2 ON</button>
+  <button id = "relay2boff">Relay 2 OFF</button>
+  <br><br>
+  <button id = "relay3bon">Relay 3 ON</button>
+  <button id = "relay3boff">Relay 3 OFF</button>
+  <br><br>
+  <button id = "relay4bon">Relay 4 ON</button>
+  <button id = "relay4boff">Relay 4 OFF</button>
+  <br><br>
+  <button id = "relay5bon">Relay 5 ON</button>
+  <button id = "relay5boff">Relay 5 OFF</button>
+  <br><br>
+  <button id = "relay6bon">Relay 6 ON</button>
+  <button id = "relay6boff">Relay 6 OFF</button>
+  
   <script>
-    // Connect over secure WebSocket
-    const client = mqtt.connect("wss://test.mosquitto.org:8081");
-
-    const logDiv = document.getElementById("log");
-
-    function log(msg) {
-      const p = document.createElement("div");
-      p.className = "msg";
-      p.textContent = msg;
-      logDiv.appendChild(p);
-      logDiv.scrollTop = logDiv.scrollHeight;
-    }
-
-    client.on("connect", () => {
-      log("✅ Connected to broker test.mosquitto.org");
+  
+  const relay1on = document.getElementById("relay1bon");
+  const relay1off = document.getElementById("relay1boff");
+  const relay2on = document.getElementById("relay2bon");
+  const relay2off = document.getElementById("relay2boff");
+  const relay3on = document.getElementById("relay3bon");
+  const relay3off = document.getElementById("relay3boff");
+  const relay4on = document.getElementById("relay4bon");
+  const relay4off = document.getElementById("relay4boff");
+  const relay5on = document.getElementById("relay5bon");
+  const relay5off = document.getElementById("relay5boff");
+  const relay6on = document.getElementById("relay6bon");
+  const relay6off = document.getElementById("relay6boff");
+  
+  // Connect over secure WebSocket
+  const client = mqtt.connect("wss://test.mosquitto.org:8081");
+  
+  relay1on.addEventListener("click", function(){
+    const msg1ontopic = "psycoder/pub";
+    const msg1on = "1 on";
+    client.publish(msg1ontopic, msg1on);
     });
-
-    client.on("message", (topic, message) => {
-      log(`📩 [${topic}] ${message.toString()}`);
+    
+  relay1off.addEventListener("click", function(){
+    const msg1offtopic = "psycoder/pub";
+    const msg1off = "1 off";
+    client.publish(msg1offtopic, msg1off);
     });
-
-    function subscribeTopic() {
-      const topic = document.getElementById("subTopic").value;
-      client.subscribe(topic, (err) => {
-        if (!err) {
-          log(`🔔 Subscribed to ${topic}`);
-        } else {
-          log(`❌ Subscribe error: ${err}`);
-        }
-      });
-    }
-
-    function publishMessage() {
-      const topic = document.getElementById("pubTopic").value;
-      const message = document.getElementById("pubMessage").value;
-      client.publish(topic, message);
-      log(`📤 Sent to [${topic}]: ${message}`);
-    }
+    
+  relay2on.addEventListener("click", function(){
+    const msg2ontopic = "psycoder/pub";
+    const msg2on = "2 on";
+    client.publish(msg2ontopic, msg2on);
+    });
+    
+  relay2off.addEventListener("click", function(){
+    const msg2offtopic = "psycoder/pub";
+    const msg2off = "2 off";
+    client.publish(msg2offtopic, msg2off);
+    });
+    
+  relay3on.addEventListener("click", function(){
+    const msg3ontopic = "psycoder/pub";
+    const msg3on = "3 on";
+    client.publish(msg3ontopic, msg3on);
+    });
+    
+  relay3off.addEventListener("click", function(){
+    const msg3offtopic = "psycoder/pub";
+    const msg3off = "3 off";
+    client.publish(msg3offtopic, msg3off);
+    });
+    
+  relay4on.addEventListener("click", function(){
+    const msg4ontopic = "psycoder/pub";
+    const msg4on = "4 on";
+    client.publish(msg4ontopic, msg4on);
+    });
+    
+  relay4off.addEventListener("click", function(){
+    const msg4offtopic = "psycoder/pub";
+    const msg4off = "4 off";
+    client.publish(msg4offtopic, msg4off);
+    });
+    
+  relay5on.addEventListener("click", function(){
+    const msg5ontopic = "psycoder/pub";
+    const msg5on = "5 on";
+    client.publish(msg5ontopic, msg5on);
+    });
+    
+  relay5off.addEventListener("click", function(){
+    const msg5offtopic = "psycoder/pub";
+    const msg5off = "5 off";
+    client.publish(msg5offtopic, msg5off);
+    });
+    
+  relay6on.addEventListener("click", function(){
+    const msg6ontopic = "psycoder/pub";
+    const msg6on = "6 on";
+    client.publish(msg6ontopic, msg6on);
+    });
+    
+  relay6off.addEventListener("click", function(){
+    const msg6offtopic = "psycoder/pub";
+    const msg6off = "6 off";
+    client.publish(msg6offtopic, msg6off);
+    });
+  
   </script>
 </body>
 </html>
